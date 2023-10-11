@@ -1,0 +1,44 @@
+@font-face {
+    font-family: "Rubik";
+    src: url(./Fonts/Rubik/static/Rubik-Regular.ttf);
+}
+$Rublik:'Rubik';
+*{
+    font-family: $Rublik;
+}
+.dashboard {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
+
+    .dashboardLeft {
+        background-color: rgba(244, 244, 255, 0.21);
+        width: 182px;
+        height: 100vh;
+        .top{
+            height: auto;
+            width: 100%;
+            .logo{
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              margin-top: 10px;
+              width: 100%;
+              height: auto;
+              font-weight: 700;
+              line-height: normal;
+              font-style: normal;
+            }
+        }
+
+    }
+
+    .dashboardRight {
+        height: 100vh;
+        flex: 1;
+    }
+}
