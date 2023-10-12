@@ -1,0 +1,2 @@
+const Databases = [{ label: 'Postgre SQL', value: 'Postgre SQL' }, { label: 'MySQL', value: 'MySQL' }, { label: 'MariaDB', value: 'MariaDB' }, { label: 'Oracle', value: 'Oracle' }];
+export { Databases };
