@@ -17,23 +17,16 @@ import { } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
 // import a11yLight from 'react-syntax-highlighter/dist/cjs/styles/hljs/a11y-light';
 // import anOldHope from 'react-syntax-highlighter/dist/cjs/styles/hljs/an-old-hope';
 // import atelierCaveLight from 'react-syntax-highlighter/dist/cjs/styles/hljs/atelier-cave-light';
+import atelierForestLight from 'react-syntax-highlighter/dist/cjs/styles/hljs/atelier-forest-light';
 import atelierSulphurpoolLight from 'react-syntax-highlighter/dist/cjs/styles/hljs/atelier-sulphurpool-light';
-// import atelierForestLight from 'react-syntax-highlighter/dist/cjs/styles/hljs/atelier-forest-light';
 
 
 const { TextArea } = Input;
 const TextToSql = () => {
     function SQLCodeComponent() {
-        const sqlCode = `CREATE TABLE plannings (
-            Planning_Id int(10) unsigned NOT NULL AUTO_INCREMENT,
-            Admin_id int(11) NOT NULL,
-            Content int(11) NOT NULL,
-            Start_Week text NOT NULL,
-            Employe_Id int(11) NOT NULL,
-            PRIMARY KEY (Planning_Id)
-          ) ENGINE=InnoDB DEFAULT CHARSET=utf8;`;
+        const sqlCode = `SELECT * FROM EMPLOYEE WHERE dept = 'Sales';`;
         return (
-            <SyntaxHighlighter style={atelierSulphurpoolLight} wrapLines language="sql" customStyle={{ margin: '0px', borderTopLeftRadius: '8px', borderTopRightRadius: '8px', fontSize: '14px', textAlign: 'justify'}}>
+            <SyntaxHighlighter style={atelierSulphurpoolLight} lineNumberContainerStyle={{ backgroundColor: "#0DD1ADE8", fontSize: '10px' }} wrapLines language="sql" customStyle={{ margin: '0px', borderTopLeftRadius: '8px', borderTopRightRadius: '8px', fontSize: '14px', textAlign: 'justify', color: '#0DD1ADE8', backgroundColor: 'rgb(248 249 251)' }}>
                 {sqlCode}
             </SyntaxHighlighter>
         );

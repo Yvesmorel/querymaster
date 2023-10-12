@@ -10,7 +10,7 @@ const index = () => {
             </div>
             <div className="aiGeneratorBottom">
                 <div className="runSql">
-                 
+                   <label>No data(connect your database)</label>
                 </div>
             </div>
         </div>
