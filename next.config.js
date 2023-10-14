@@ -10,5 +10,7 @@ module.exports = {
         MessagingSenderId: process.env.MessagingSenderId,
         AppId: process.env.AppId,
         MeasurementId: process.env.MeasurementId,
+        BARDAI:process.env.BARDAI,
+        RUNSQL:process.env.RUNSQL
     },
 }

@@ -2,10 +2,15 @@ import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "@/firebase/firebaseConfig";
 
 
-const getQuery = async (data, setSendSpinner, message, setIa, alreadyGenerate, setAlreadyGenerate) => {
+const getQuery = async (axios, setSendSpinner, human, wordAllow, database, message, setIa, addQuery, getSQL) => {
     setSendSpinner(true);
+    if (!human) {
+        message.info("Please enter your query.");
+        setSendSpinner(false);
+        return;
+    }
     try {
-        const q = query(collection(db, 'Simple'), where("query", "==", data));
+        const q = query(collection(db, 'Simple'), where("query", "==", human));
         const recupData = []
         const querySnapshot = await getDocs(q);
         querySnapshot.forEach((doc) => {
@@ -13,17 +18,12 @@ const getQuery = async (data, setSendSpinner, message, setIa, alreadyGenerate, s
         });
 
         if (recupData.length > 0) {
-            let i = 0;
             let query = recupData[0]?.result
             setIa(query)
-            setAlreadyGenerate(!alreadyGenerate);
             setSendSpinner(false);
         } else {
-            setAlreadyGenerate(!alreadyGenerate);
+            getSQL(axios, setSendSpinner, human, wordAllow, database, message, setIa, addQuery)
         }
-
-
-
     } catch (error) {
 
         setSendSpinner(false);

@@ -1,21 +1,6 @@
 
 
-const getSQL = async (axios, getQuery, setSendSpinner, human, wordAllow, database, message, setIa, alreadyGenerate, setAlreadyGenerate) => {
-    await getQuery(human, setSendSpinner, message, setIa,alreadyGenerate, setAlreadyGenerate);
-   
-    if (alreadyGenerate==false) {
-        console.log("return")
-        return;
-    }
-  
-
-    if (!human) {
-
-        message.info("Please enter your query.");
-        setSendSpinner(false);
-        return;
-    }
-
+const getSQL = async (axios, setSendSpinner, human, wordAllow, database, message, setIa, addQuery) => {
     function isValidQuery(query) {
         let isValid = 0;
 
@@ -33,27 +18,32 @@ const getSQL = async (axios, getQuery, setSendSpinner, human, wordAllow, databas
 
     if (isValidQuery(human) > 0) {
         // Exécuter la requête
-
+        const schema = `-- create
+        CREATE TABLE EMPLOYEE (
+          empId INTEGER PRIMARY KEY,
+          name TEXT NOT NULL,
+          dept TEXT NOT NULL
+        );
+        
+        -- insert
+        INSERT INTO EMPLOYEE VALUES (0001, 'Clark', 'Sales');
+        INSERT INTO EMPLOYEE VALUES (0002, 'Dave', 'Accounting');
+        INSERT INTO EMPLOYEE VALUES (0003, 'Ava', 'Sales');
+        `
         axios({
-            url: 'https://api.openai.com/v1/completions',
+            url: 'https://generativelanguage.googleapis.com/v1beta3/models/text-bison-001:generateText?key=' + process.env.BARDAI,
             method: 'post',
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: 'Bearer ' + process.env.OPENAIKEY,
+                // Authorization: 'Bearer ' + process.env.BARDAI,
             },
             data: {
-                model: 'text-davinci-003',
-                prompt: 'Create a SQL request' + human + ' in' + database + ' :',
-                temperature: 0.3,
-                max_tokens: 60,
-                top_p: 1.0,
-                frequency_penalty: 0.0,
-                presence_penalty: 0.0,
+                prompt: { text: "Create SQL query to " + human + ' in' + database + "based on this SQL code" + schema },
             },
         })
-            .then(res => {
-                let query = res.data.choices[0].text
-                setIa(query)
+            .then(({ data }) => {
+                let response = data?.candidates[0].output?.match(/```sql\n([\s\S]+)\n```/)[1];
+                setIa(response || 'No result')
                 setSendSpinner(false);
             })
             .catch(function (error) {

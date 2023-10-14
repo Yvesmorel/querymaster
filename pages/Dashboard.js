@@ -3,9 +3,17 @@ import Image from 'next/image';
 import dbLogo from './logo/dbLogo.png';
 import DashboardNavbar from './components/DashboardNavbar';
 import { Button, Avatar } from 'antd';
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { AppContext } from '@/app/AppContextProvider';
+// import Bard from "bard-ai";
 const Dashboard = () => {
+    // const getBardRes = async () => {
+    //     let myBard = new Bard(process.env.BARDAI);
+    //     console.log(await myBard.ask("Hello, bard!"));
+    // }
+    useEffect(() => {
+        // getBardRes();
+    }, [])
     return (
         <div className='dashboard'>
             <DashboardLeft />
@@ -40,13 +48,13 @@ const DashboardRight = () => {
         <div className='dashboardRight'>
             <div className='top'>
                 <div className='version'>
-                    @Bêta
+                    @Bêta-Support only English
                 </div>
-                <div className='aiGeneratorNavbar' style={selectedItem.text === 'AI Generator' ? {} : { visibility: 'hidden' }}>
+                {/* <div className='aiGeneratorNavbar' style={selectedItem.text === 'AI Generator' ? {} : { visibility: 'hidden' }}>
                     {
                         aiGeneratorNavbar.map((item, i) => <div onClick={() => handleSelectedGenerator(item)} key={i} className={item === selectedGenerator ? 'item itemActive' : 'item'}>{item}</div>)
                     }
-                </div>
+                </div> */}
                 <div className='profile'>
                     <label className='username'>username</label>
                     <Avatar style={{ backgroundColor: "#635BFF", verticalAlign: 'middle' }} size="large">
