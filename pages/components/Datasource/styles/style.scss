@@ -1,0 +1,20 @@
+.dataSource{
+    width: 100%;
+    display: flex;
+    flex: 1;
+    .dataSourceLeft{
+        height: 100%;
+        width: 150px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .dataSourceRight{
+        height: 100%;
+        flex: 1;
+        background-color: rgba(244, 244, 255, 0.21);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}

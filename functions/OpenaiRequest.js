@@ -42,12 +42,14 @@ const getSQL = async (axios, setSendSpinner, human, wordAllow, database, message
             },
         })
             .then(({ data }) => {
+                console.log('succes');
                 let response = data?.candidates[0].output?.match(/```sql\n([\s\S]+)\n```/)[1];
                 setIa(response || 'No result')
+                addQuery(human, response, 'Simple', null,"ZEfggj7u6EOX61hIrkeZc2EEwl93",message);
                 setSendSpinner(false);
             })
             .catch(function (error) {
-                message.error("An error has occurred.");
+                message.error("An error has occurred, please try again.");
                 setSendSpinner(false);
             });
     } else {
