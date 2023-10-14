@@ -14,9 +14,11 @@ export default function AppContextProvider({ children }) {
   const [human,setHuman]=useState('');
   const [ia,setIa]=useState('');
   const [database,setDatabase]=useState(Databases[0].value);
+  const [schemaList,setSchemaList]=useState([])
+  const [schema, setSchema] = useState('');
 
   
-  return <AppContext.Provider value={{database,setDatabase,ia,setIa ,human,setHuman,selectedGenerator,setSelectedGenerator,aiGeneratorNavbar,navbarItems, selectedItem, setSelectedItem }}>
+  return <AppContext.Provider value={{schema, setSchema,schemaList,setSchemaList,database,setDatabase,ia,setIa ,human,setHuman,selectedGenerator,setSelectedGenerator,aiGeneratorNavbar,navbarItems, selectedItem, setSelectedItem }}>
     {children}
   </AppContext.Provider>
 }

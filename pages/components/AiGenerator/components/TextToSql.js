@@ -35,7 +35,7 @@ const TextToSql = () => {
     const { database, setDatabase, ia, setIa, human, setHuman } = useContext(AppContext);
     function SQLCodeComponent(sqlCode) {
         return (
-            <SyntaxHighlighter style={atelierSulphurpoolLight} lineNumberContainerStyle={{ backgroundColor: "#0DD1ADE8", fontSize: '10px' }} wrapLines language="sql" customStyle={{ margin: '0px', borderTopLeftRadius: '8px', borderTopRightRadius: '8px', fontSize: '14px', textAlign: 'justify', color: '#0DD1ADE8', backgroundColor: 'rgb(248 249 251)' }}>
+            <SyntaxHighlighter style={atelierForestLight} lineNumberContainerStyle={{ backgroundColor: "#0DD1ADE8", fontSize: '10px' }} wrapLines language="sql" customStyle={{ margin: '0px', borderTopLeftRadius: '8px', borderTopRightRadius: '8px', fontSize: '14px', textAlign: 'justify', color: '#0DD1ADE8', backgroundColor: 'rgb(248 249 251)' }}>
                 {sqlCode}
             </SyntaxHighlighter>
         );
@@ -52,7 +52,7 @@ const TextToSql = () => {
                     <div className='requestBottomRight'>
 
                         <Select dropdownStyle={{ optionSelectedColor: '#635BFF' }} options={Databases} bordered={false} defaultValue={Databases[0].label} className='databases' onChange={(value) => setDatabase(value)} />
-                        <Button icon={sendSpinner ? <Spin spinning size='small' /> : <SendOutlined style={{ color: '#635BFF' }} />} className='send' onClick={() => getQuery(axios, setSendSpinner, human, wordAllow, database, message, setIa,addQuery,getSQL)}>SEND</Button>
+                        <Button loading={sendSpinner} icon={ <SendOutlined style={{ color: '#635BFF' }} />} className='send' onClick={() => getQuery(axios, setSendSpinner, human, wordAllow, database, message, setIa, addQuery, getSQL)}>SEND</Button>
 
 
                     </div>
@@ -66,7 +66,7 @@ const TextToSql = () => {
                 <div className='responseBottom'>
                     <div className='ai'>AI</div>
                     <div className='responseBottomRight'>
-                        <Button icon={runSpinner ? <Spin spinning size='small' /> :<Image width={15} src={run} alt='run' />} className='run' onClick={() => convertToSQLite(setRunSpinner,ia,axios,message,runSQL)}>RUN</Button>
+                        <Button loading={runSpinner} icon={<Image width={15} src={run} alt='run' />} className='run' onClick={() => convertToSQLite(setRunSpinner, ia, axios, message, runSQL)}>RUN</Button>
                         <Button icon={<CopyOutlined style={{ color: '#635BFF' }} alt='copy' />} className='copy'>COPY</Button>
                     </div>
                 </div>
