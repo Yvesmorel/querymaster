@@ -2,7 +2,7 @@ import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "@/firebase/firebaseConfig";
 
 
-const getQuery = async (axios, setSendSpinner, human, wordAllow, database, message, setIa, addQuery, getSQL) => {
+const getQuery = async (axios, setSendSpinner, human, wordAllow, database, message, setIa, addQuery, getSQL,selectedDatabase,schemaList) => {
     setSendSpinner(true);
     if (!human) {
         message.info("Please enter your query.");
@@ -22,7 +22,7 @@ const getQuery = async (axios, setSendSpinner, human, wordAllow, database, messa
             setIa(query)
             setSendSpinner(false);
         } else {
-            getSQL(axios, setSendSpinner, human, wordAllow, database, message, setIa, addQuery)
+            getSQL(axios, setSendSpinner, human, wordAllow, database, message, setIa, addQuery,selectedDatabase,schemaList)
         }
     } catch (error) {
 

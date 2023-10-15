@@ -1,17 +1,10 @@
-export const convertToSQLite=(setRunSpinner,ia,axios,message,runSQL)=>{
+export const convertToSQLite = (setRunSpinner, ia, axios, message, runSQL, selectedDatabase, schemaList,runResult,setRunResult) => {
     setRunSpinner(true);
-    const schema=`-- create
-    CREATE TABLE EMPLOYEE (
-      empId INTEGER PRIMARY KEY,
-      name TEXT NOT NULL,
-      dept TEXT NOT NULL
-    );
-    
-    -- insert
-    INSERT INTO EMPLOYEE VALUES (0001, 'Clark', 'Sales');
-    INSERT INTO EMPLOYEE VALUES (0002, 'Dave', 'Accounting');
-    INSERT INTO EMPLOYEE VALUES (0003, 'Ava', 'Sales');
-    `
+    const schema = schemaList.length > 0 ?schemaList[selectedDatabase].schema :'';
+    if (schema==='') {
+        message.error('Please load data source.');
+        setRunSpinner(false);
+    }
     axios({
         url: 'https://generativelanguage.googleapis.com/v1beta3/models/text-bison-001:generateText?key=' + process.env.BARDAI,
         method: 'post',
@@ -25,9 +18,9 @@ export const convertToSQLite=(setRunSpinner,ia,axios,message,runSQL)=>{
     })
         .then(({ data }) => {
             console.log(data);
-            let response=data?.candidates[0].output;
-            runSQL(schema,axios,response,setRunSpinner,message)
-          
+            let response = data?.candidates[0].output;
+            runSQL(schema, axios, response, setRunSpinner, message,runResult,setRunResult)
+
         })
         .catch(function (error) {
             message.error("An error has occurred.");

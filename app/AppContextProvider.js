@@ -1,9 +1,10 @@
 'use client'
-import { createContext, useState } from 'react';
+import { createContext, useState ,useEffect} from 'react';
 import { faRobot, faNetworkWired, faMoneyCheck } from '@fortawesome/free-solid-svg-icons';
 import AiGeneraor from '../pages/components/AiGenerator/index';
 import Datasource from '../pages/components/Datasource/index';
 import { Databases } from '@/pages/components/AiGenerator/Tables';
+import { getSchema } from '@/functions/GetSchema';
 export const AppContext = createContext()
 
 export default function AppContextProvider({ children }) {
@@ -16,9 +17,12 @@ export default function AppContextProvider({ children }) {
   const [database,setDatabase]=useState(Databases[0].value);
   const [schemaList,setSchemaList]=useState([])
   const [schema, setSchema] = useState('');
-
-  
-  return <AppContext.Provider value={{schema, setSchema,schemaList,setSchemaList,database,setDatabase,ia,setIa ,human,setHuman,selectedGenerator,setSelectedGenerator,aiGeneratorNavbar,navbarItems, selectedItem, setSelectedItem }}>
+  const [selectedDatabase, setSelectedDatabase] = useState(0);
+  const [runResult,setRunResult]=useState({columns:[],values:[]})
+  useEffect(() => {
+    getSchema("ZEfggj7u6EOX61hIrkeZc2EEwl93", setSchemaList);
+}, [])
+  return <AppContext.Provider value={{runResult,setRunResult,selectedDatabase, setSelectedDatabase,schema, setSchema,schemaList,setSchemaList,database,setDatabase,ia,setIa ,human,setHuman,selectedGenerator,setSelectedGenerator,aiGeneratorNavbar,navbarItems, selectedItem, setSelectedItem }}>
     {children}
   </AppContext.Provider>
 }
