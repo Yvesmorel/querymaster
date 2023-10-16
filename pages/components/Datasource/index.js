@@ -14,12 +14,12 @@ import atelierForestLight from 'react-syntax-highlighter/dist/cjs/styles/hljs/at
 import TABLE from './components/Table';
 const index = () => {
     const [schemaSpinner, setSchemaSpinner] = useState(false);
-   
+
     const [schemaName, setSchemaName] = useState("")
     const [previewShema, setPreviewSchema] = useState(false);
-    const { schemaList, setSchemaList, schema, setSchema,selectedDatabase, setSelectedDatabase } = useContext(AppContext);
+    const { schemaList, setSchemaList, schema, setSchema, selectedDatabase, setSelectedDatabase } = useContext(AppContext);
     const [selectedTable, setSelectedTable] = useState(0)
-    const [currentTable, setCurrentTable] = useState({columns:[],values:[]});
+    const [currentTable, setCurrentTable] = useState({ columns: [], values: [] });
     // const [tableList, setTableList] = useState(schemaList[0].tables)
     const databaseActive = {
         background: "#F4F4FF",
@@ -29,7 +29,7 @@ const index = () => {
         border: 'none',
         borderRadius: '0px'
     }
-   
+
     useEffect(() => {
         if (schemaList.length > 0) {
             getTablesContent(schemaList[selectedDatabase].schema, axios, setCurrentTable, schemaList, selectedDatabase, selectedTable, message);
@@ -53,8 +53,16 @@ const index = () => {
         const reader = new FileReader();
 
         reader.onload = (e) => {
+            if (e.target.result === "") {
+                return;
+            }
             const content = e.target.result;
-            setSchema(content);
+            const sqlQuery = content.match(/(CREATE TABLE .*?;|INSERT INTO .*?;)/gs);
+            console.log(content.match(/(CREATE TABLE .*?;|INSERT INTO .*?;)/gs).join(' '));
+            if (sqlQuery.length === 0) {
+                return;
+            }
+            setSchema(sqlQuery.join(' '));
             setPreviewSchema(true);
         };
         try {
@@ -67,7 +75,7 @@ const index = () => {
 
     const handleClickDatabase = (pos) => {
         setSelectedDatabase(pos);
-        setCurrentTable({columns:[],values:[]});
+        setCurrentTable({ columns: [], values: [] });
         getTablesContent(schemaList[pos].schema, axios, setCurrentTable, schemaList, pos, selectedTable, message);
     }
 
@@ -107,7 +115,7 @@ const index = () => {
                     }
                 </div>
                 <div className='dataSourceRightBottom'>
-                    <TABLE columns={currentTable.columns} data={currentTable.values}/>
+                    <TABLE columns={currentTable.columns} data={currentTable.values} />
                 </div>
             </div>
             <Modal
