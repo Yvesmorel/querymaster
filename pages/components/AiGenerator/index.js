@@ -27,24 +27,9 @@ const index = () => {
             </div>
             <div className="aiGeneratorBottom">
                 <div className="runSql">
-                    <div className='runSqlTop'>
-                        {
-                            schemaList.length > 0 ?
-                                <Select style={selectSchemaStyle} value={selectedDatabase} onChange={(value) => setSelectedDatabase(value)} defaultValue='select your schema' bordered={false}>
-                                    {
-                                        schemaList.map((schema, i) => {
-                                            return <Option key={i} value={i}>{schema.fileName}</Option>
-                                        })
-                                    }
-
-                                </Select> : ''
-                        }
-
-                    </div>
-                    <div className='runSqlBottom'>
-                        <TABLE columns={runResult.columns} data={runResult.values} />
-                    </div>
-
+                    
+                        <TABLE columns={runResult.columns} width={'85vw'} height={'41vh'} data={runResult.values} />
+                    
                 </div>
             </div>
         </div>

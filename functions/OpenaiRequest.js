@@ -1,5 +1,13 @@
 
-
+import { separateSQLAndJSON } from "./SqlSeparate";
+const parseToJson=(json)=> {
+    try {
+        const jsonObject = JSON.parse(json);
+        console.log(jsonObject);
+      } catch (error) {
+        console.error('Erreur de parsing JSON :', error);
+      }
+}
 const getSQL = async (axios, setSendSpinner, human, wordAllow, database, message, setIa, addQuery, selectedDatabase, schemaList) => {
     function isValidQuery(query) {
         let isValid = 0;
@@ -19,7 +27,7 @@ const getSQL = async (axios, setSendSpinner, human, wordAllow, database, message
     if (isValidQuery(human) > 0) {
         // Exécuter la requête
        
-        const request = schemaList.length > 0 ? "Create SQL query to " + human + ' in' + database + "based on this SQL code" + schemaList[selectedDatabase].schema : "Create SQL query to " + human + ' in' + database
+        const request = schemaList.length > 0 ? "Create SQL query to " + human + ' in' + database + "based on this SQL code" + schemaList[selectedDatabase].create : "Create SQL query to " + human +' in' + database
         console.log(request);
         axios({
             url: 'https://generativelanguage.googleapis.com/v1beta3/models/text-bison-001:generateText?key=' + process.env.BARDAI,
@@ -33,9 +41,10 @@ const getSQL = async (axios, setSendSpinner, human, wordAllow, database, message
             },
         })
             .then(({ data }) => {
+
                 console.log('succes');
                 let response = data?.candidates[0].output?.match(/```sql\n([\s\S]+)\n```/)[1];
-                setIa(response || 'No result')
+                setIa(response || 'No result');
                 addQuery(human, response, 'Simple', null, "ZEfggj7u6EOX61hIrkeZc2EEwl93", message);
                 setSendSpinner(false);
             })

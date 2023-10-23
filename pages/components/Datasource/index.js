@@ -12,6 +12,7 @@ import { AppContext } from '@/app/AppContextProvider';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import atelierForestLight from 'react-syntax-highlighter/dist/cjs/styles/hljs/atelier-forest-light';
 import TABLE from './components/Table';
+import { ParseSql } from '@/functions/ParseSql';
 const index = () => {
     const [schemaSpinner, setSchemaSpinner] = useState(false);
 
@@ -32,9 +33,17 @@ const index = () => {
 
     useEffect(() => {
         if (schemaList.length > 0) {
-            getTablesContent(schemaList[selectedDatabase].schema, axios, setCurrentTable, schemaList, selectedDatabase, selectedTable, message);
+            iniTializeDataSource(selectedDatabase,selectedTable);
+            // getTablesContent(schemaList[selectedDatabase].schema, axios, setCurrentTable, schemaList, selectedDatabase, selectedTable, message);
         }
     }, [schemaList])
+    const iniTializeDataSource=(selectedDatabase,selectedTable)=>{
+            const database=schemaList[selectedDatabase];
+            const tableColums =database.columns[selectedTable];
+            const tableData=database.data[selectedTable];
+            const tableName=Object.keys(tableColums)[selectedTable];
+            setCurrentTable({ columns: tableColums[tableName], values: tableData[tableName] })
+    }
     const popContent = (
         <div>
             <p>Select your database SQL file.</p>
@@ -57,12 +66,12 @@ const index = () => {
                 return;
             }
             const content = e.target.result;
-            const sqlQuery = content.match(/(CREATE TABLE .*?;|INSERT INTO .*?;)/gs);
-            console.log(content.match(/(CREATE TABLE .*?;|INSERT INTO .*?;)/gs).join(' '));
+            const sqlQuery = content
             if (sqlQuery.length === 0) {
                 return;
             }
-            setSchema(sqlQuery.join(' '));
+            
+            setSchema(sqlQuery);
             setPreviewSchema(true);
         };
         try {
@@ -75,8 +84,8 @@ const index = () => {
 
     const handleClickDatabase = (pos) => {
         setSelectedDatabase(pos);
-        setCurrentTable({ columns: [], values: [] });
-        getTablesContent(schemaList[pos].schema, axios, setCurrentTable, schemaList, pos, selectedTable, message);
+        setSelectedTable(0);
+        iniTializeDataSource(pos,0);
     }
 
     return (
@@ -104,18 +113,19 @@ const index = () => {
                 <div className='dataSourceRightTop'>
                     {
                         schemaList.filter((schema, i) => i === selectedDatabase).map((schema, i) => {
-                            return schema.tables.map((table, i) => {
+                            return schema.tableList.map((table, i) => {
                                 return <Button onClick={() => {
                                     console.log(i)
                                     setSelectedTable(i)
-                                    getTablesContent(schemaList[selectedDatabase].schema, axios, setCurrentTable, schemaList, selectedDatabase, i, message);
+                                    iniTializeDataSource(selectedDatabase,i);
+                                    // getTablesContent(schemaList[selectedDatabase].schema, axios, setCurrentTable, schemaList, selectedDatabase, i, message);
                                 }} style={i === selectedTable ? { color: '#635BFF' } : {}} className='tables' key={i}>{table}</Button>
                             })
                         })
                     }
                 </div>
                 <div className='dataSourceRightBottom'>
-                    <TABLE columns={currentTable.columns} data={currentTable.values} />
+                    <TABLE columns={currentTable.columns} data={currentTable.values} width={"72vw"} height={"70vh"} />
                 </div>
             </div>
             <Modal
@@ -124,7 +134,7 @@ const index = () => {
                 title="Conpile your schema"
                 onCancel={() => setPreviewSchema(!previewShema)}
                 footer={[
-                    <Button key="submit" type="primary" loading={schemaSpinner} onClick={() => schemaToSQLite(schema, axios, message, "ZEfggj7u6EOX61hIrkeZc2EEwl93", addSchema, schemaName, setSchemaSpinner, getTables)}>
+                    <Button key="submit" type="primary" loading={schemaSpinner} onClick={() => ParseSql(schema, axios,addSchema,setSchemaSpinner,message,"ZEfggj7u6EOX61hIrkeZc2EEwl93",schemaName) }>
                         Compile
                     </Button>,
                 ]}
@@ -137,5 +147,5 @@ const index = () => {
         </div>
     );
 };
-
+// schemaToSQLite(schema, axios, message, "ZEfggj7u6EOX61hIrkeZc2EEwl93", addSchema, schemaName, setSchemaSpinner, getTables)
 export default index;

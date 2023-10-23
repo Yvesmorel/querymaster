@@ -2,15 +2,18 @@ import { collection, doc, addDoc, setDoc, arrayUnion, updateDoc } from "firebase
 import { db } from "@/firebase/firebaseConfig";
 import { useContext } from "react";
 import { useState, useEffect } from "react";
-export const addSchema = async (schema, userId, message, fileName, setSchemaSpinner,tables) => {
+export const addSchema = async (create,insert, userId, message, fileName, setSchemaSpinner,tables,tableList) => {
     const date = new Date()
     try {
         await addDoc(collection(db, "schema"), {
-            schema: schema,
+            create: create,
+            insert:insert,
             date: date.toLocaleDateString(),
             fileName: fileName,
             userId:userId,
-            tables:tables
+            columns:tables.columns,
+            data:tables.data,
+            tableList:tableList
         })
         message.info('Schema Saved Successfully!')
         setSchemaSpinner(false);

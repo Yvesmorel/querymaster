@@ -19,7 +19,7 @@ const getQuery = async (axios, setSendSpinner, human, wordAllow, database, messa
 
         if (recupData.length > 0) {
             let query = recupData[0]?.result
-            setIa(query)
+            setIa(query.match(/```sql\n([\s\S]+)\n```/)[1] || 'no result')
             setSendSpinner(false);
         } else {
             getSQL(axios, setSendSpinner, human, wordAllow, database, message, setIa, addQuery,selectedDatabase,schemaList)

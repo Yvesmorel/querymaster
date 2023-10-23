@@ -19,10 +19,11 @@ export default function AppContextProvider({ children }) {
   const [schema, setSchema] = useState('');
   const [selectedDatabase, setSelectedDatabase] = useState(0);
   const [runResult,setRunResult]=useState({columns:[],values:[]})
+  const [jsonResult,setJsonResult]=useState({});
   useEffect(() => {
     getSchema("ZEfggj7u6EOX61hIrkeZc2EEwl93", setSchemaList);
 }, [])
-  return <AppContext.Provider value={{runResult,setRunResult,selectedDatabase, setSelectedDatabase,schema, setSchema,schemaList,setSchemaList,database,setDatabase,ia,setIa ,human,setHuman,selectedGenerator,setSelectedGenerator,aiGeneratorNavbar,navbarItems, selectedItem, setSelectedItem }}>
+  return <AppContext.Provider value={{jsonResult,setJsonResult,runResult,setRunResult,selectedDatabase, setSelectedDatabase,schema, setSchema,schemaList,setSchemaList,database,setDatabase,ia,setIa ,human,setHuman,selectedGenerator,setSelectedGenerator,aiGeneratorNavbar,navbarItems, selectedItem, setSelectedItem }}>
     {children}
   </AppContext.Provider>
 }

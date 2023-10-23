@@ -1,6 +1,6 @@
 export const convertToSQLite = (setRunSpinner, ia, axios, message, runSQL, selectedDatabase, schemaList,runResult,setRunResult) => {
     setRunSpinner(true);
-    const schema = schemaList.length > 0 ?schemaList[selectedDatabase].schema :'';
+    const schema = schemaList.length > 0 ?schemaList[selectedDatabase].create+" "+schemaList[selectedDatabase].insert :'';
     if (schema==='') {
         message.error('Please load data source.');
         setRunSpinner(false);
@@ -19,7 +19,7 @@ export const convertToSQLite = (setRunSpinner, ia, axios, message, runSQL, selec
         .then(({ data }) => {
             console.log(data);
             let response = data?.candidates[0].output;
-            runSQL(schema, axios, response, setRunSpinner, message,runResult,setRunResult)
+            runSQL(schema, axios, response, setRunSpinner, message,runResult,setRunResult);
 
         })
         .catch(function (error) {

@@ -26,14 +26,30 @@ import { convertToSQLite } from '@/functions/ConvertToSQLite';
 import { runSQL } from '@/functions/RunSQL';
 
 import axios from 'axios';
-
+const { Option } = Select;
 const { TextArea } = Input;
+const selectSchemaStyle = {
+    background: "white",
+    color: '#635BFF',
+    width: '200px',
+    textAlign: 'center',
+    border: 'none',
+    borderRadius: '0px',
+    boxShadow: "0px 12px 26px 0px rgba(16, 30, 115, 0.06)",
+    borderRadius: '5px',
+    marginRight:'5px'
+}
 const TextToSql = () => {
     const [sendSpinner, setSendSpinner] = useState(false);
     const [runSpinner, setRunSpinner] = useState(false);
     const [runRes,setRunRes]=useState([]);
     const [alreadyGenerate, setAlreadyGenerate] = useState(false)
-    const { database, setDatabase, ia, setIa, human, setHuman,selectedDatabase,schemaList,runResult,setRunResult } = useContext(AppContext);
+    const { jsonResult,setJsonResult,database, setDatabase, ia, setIa, human,setHuman,schemaList, setHumanschemaList, setSchemaList, schema, setSchema, selectedDatabase, setSelectedDatabase,runResult,setRunResult } = useContext(AppContext);
+   
+    
+      
+   
+      
     function SQLCodeComponent(sqlCode) {
         return (
             <SyntaxHighlighter style={atelierForestLight} lineNumberContainerStyle={{ backgroundColor: "#0DD1ADE8", fontSize: '10px' }} wrapLines language="sql" customStyle={{ margin: '0px', borderTopLeftRadius: '8px', borderTopRightRadius: '8px', fontSize: '14px', textAlign: 'justify', color: '#0DD1ADE8', backgroundColor: 'rgb(248 249 251)' }}>
@@ -44,7 +60,7 @@ const TextToSql = () => {
 
 
     return (
-
+      
         <div className='textToSql'>
             <div className='request'>
                 <TextArea rows={4} onChange={(e) => setHuman(e.target.value)} className='requestTop' placeholder='What ara you thinking?' />
@@ -67,6 +83,20 @@ const TextToSql = () => {
                 <div className='responseBottom'>
                     <div className='ai'>AI</div>
                     <div className='responseBottomRight'>
+           
+                        {
+                            schemaList.length > 0 ?
+                                <Select style={selectSchemaStyle} value={selectedDatabase} onChange={(value) => setSelectedDatabase(value)} defaultValue='select your schema' bordered={false}>
+                                    {
+                                        schemaList.map((schema, i) => {
+                                            return <Option key={i} value={i}>{schema.fileName}</Option>
+                                        })
+                                    }
+
+                                </Select> : ''
+                        }
+
+                 
                         <Button loading={runSpinner} icon={<Image width={15} src={run} alt='run' />} className='run' onClick={() => convertToSQLite(setRunSpinner, ia, axios, message, runSQL, selectedDatabase, schemaList,runResult,setRunResult)}>RUN</Button>
                         <Button icon={<CopyOutlined style={{ color: '#635BFF' }} alt='copy' />} className='copy'>COPY</Button>
                     </div>
