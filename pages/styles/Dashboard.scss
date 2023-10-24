@@ -25,6 +25,19 @@ $Rublik: 'Rubik';
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+        @media (max-width: 1118px) {
+            width: 50px;
+            .top {
+                height: auto;
+                width: 100%;
+    
+                .logo {
+                  label{
+                    font-size: 0px;
+                  }
+                }
+            }
+        }
 
         .top {
             height: auto;
@@ -51,7 +64,13 @@ $Rublik: 'Rubik';
             flex-direction: column;
             justify-content: space-between;
             align-items: center;
-
+            @media (max-width: 1118px) {
+                .signOut{
+                    label{
+                        font-size: 0px;
+                    }
+                }
+            }
             .signOut {
                 width: 90%;
                 background-color: #00112D;
@@ -63,6 +82,7 @@ $Rublik: 'Rubik';
 
     .dashboardRight {
         height: 100vh;
+        overflow-y: auto;
         display: flex;
         flex-direction: column;
         flex: 1;
@@ -73,7 +93,11 @@ $Rublik: 'Rubik';
             display: flex;
             justify-content: space-between;
             align-items: center;
-
+            @media (max-width: 452px) {
+                .version {
+                    font-size: 9px;
+                }
+            }
             .version {
                 
                 background-color: #F4F4FF;

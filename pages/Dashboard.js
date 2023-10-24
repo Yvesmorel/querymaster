@@ -5,6 +5,8 @@ import DashboardNavbar from './components/DashboardNavbar';
 import { Button, Avatar } from 'antd';
 import React, { useState, useContext, useEffect } from 'react';
 import { AppContext } from '@/app/AppContextProvider';
+import { faRectangleXmark } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import Bard from "bard-ai";
 const Dashboard = () => {
     // const getBardRes = async () => {
@@ -33,7 +35,7 @@ const DashboardLeft = () => {
             </div>
             <div className='bottom'>
                 <label className='plan'>FREE</label>
-                <Button className='signOut'>Sign out</Button>
+                <Button className='signOut'><FontAwesomeIcon style={{marginRight:'5px'}} icon={faRectangleXmark}/><label>Sign out</label></Button>
             </div>
         </div>
     );

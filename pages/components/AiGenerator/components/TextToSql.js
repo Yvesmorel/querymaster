@@ -35,7 +35,7 @@ const { TextArea } = Input;
 const selectSchemaStyle = {
     background: "white",
     color: '#635BFF',
-    width: '200px',
+    width: '150px',
     textAlign: 'center',
     border: 'none',
     borderRadius: '0px',

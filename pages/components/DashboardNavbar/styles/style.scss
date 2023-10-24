@@ -13,6 +13,17 @@
         align-items: center;
         margin-bottom: 20px;
         height: 55px;
+        @media (max-width: 1118px) {
+            justify-content: center;
+            margin-left: 2px;
+            .iconCont {
+                width: 90%;
+            }
+            label {
+                margin-left: 0px;
+               font-size: 0px;
+            }
+        }
 
         .iconCont {
             margin-left: 5px;

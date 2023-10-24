@@ -1,9 +1,17 @@
+@media (max-width: 1118px) {
+    .aiGenerator {
+        overflow-y: auto;
+
+    }
+}
+
 .aiGenerator {
     width: 100%;
     display: flex;
     flex: 1;
     flex-direction: column;
     align-items: center;
+
 
     .aiGeneratorTop {
         display: flex;
@@ -12,6 +20,21 @@
         height: 40vh;
         width: 100%;
 
+
+        @media (max-width: 1118px) {
+            align-items: normal;
+            height: 100vh;
+
+            .textToSql {
+                width: 40vh;
+                height: auto;
+                flex-direction: column;
+                justify-content: center;
+                margin-top: 15px;
+
+            }
+        }
+
         .textToSql,
         .sqlToText {
             display: flex;
@@ -19,6 +42,7 @@
             align-items: center;
             height: 40vh;
             width: 98%;
+
 
         }
 
@@ -35,6 +59,11 @@
                 flex-direction: column;
                 align-items: center;
                 justify-content: space-between;
+                @media (max-width: 1118px) {
+                    width: 98%;
+                    margin-bottom: 10px;
+                }
+                
             }
 
             .request,
@@ -76,7 +105,20 @@
                 }
 
                 .requestBottom {
-
+                    @media (max-width: 452px) {
+                        height: auto;
+                        
+                        .requestBottomRight {
+                            display: flex;
+                            justify-content: space-evenly;
+                            align-items: center;
+                            flex-direction: column;
+                            height: 80px;
+                            .send{
+                                width: 120px;
+                            }
+                        }
+                    }
                     .requestBottomRight {
                         width: auto;
                         margin-right: 4px;
@@ -92,6 +134,7 @@
 
 
                         .send {
+                            
                             border: none;
                             color: #635BFF;
                             box-shadow: 0px 12px 26px 0px rgba(16, 30, 115, 0.06);
@@ -101,6 +144,20 @@
                 }
 
                 .responseBottom {
+                    @media (max-width: 452px) {
+                        height: auto;
+                        
+                        .responseBottomRight{
+                            display: flex;
+                            justify-content: space-evenly;
+                            align-items: center;
+                            flex-direction: column;
+                            height: 120px;
+                            .run ,.copy{ 
+                                width: 150px;
+                            }
+                        }
+                    }
                     .responseBottomRight {
                         width: auto;
                         margin-right: 4px;
@@ -131,8 +188,31 @@
         align-items: center;
         flex: 1;
 
+        @media (max-width: 1118px) {
+
+            flex: none;
+
+            .runSql {
+                margin-bottom: 10px;
+                height: auto;
+                .runSqlTop {
+                    flex-direction: column;
+                    align-items: center;
+
+                    .selectSchema {
+                        width: 100%;
+                        margin-bottom: 10px;
+                    }
+                }
+
+                .runSqlBottom {
+                    overflow-y: auto;
+                }
+            }
+        }
+
         .runSql {
-          
+
             border-radius: 8px;
             height: 100%;
             width: 98%;
@@ -147,7 +227,8 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                .selectSchema{
+
+                .selectSchema {
                     width: 100px;
                 }
             }
