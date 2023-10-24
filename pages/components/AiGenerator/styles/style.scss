@@ -43,9 +43,10 @@
                 .requestTop,
                 .responseTop {
                     width: 100%;
-                    flex: 1;
+                    height: 30vh;
                     border: none;
                     background-color: transparent;
+                    overflow-y: auto;
                 }
 
                 .requestBottom,

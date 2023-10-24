@@ -21,6 +21,7 @@ const index = () => {
     const { schemaList, setSchemaList, schema, setSchema, selectedDatabase, setSelectedDatabase } = useContext(AppContext);
     const [selectedTable, setSelectedTable] = useState(0)
     const [currentTable, setCurrentTable] = useState({ columns: [], values: [] });
+    const [searchDatabase,setSearchDatabase]=useState('');
     // const [tableList, setTableList] = useState(schemaList[0].tables)
     const databaseActive = {
         background: "#F4F4FF",
@@ -60,6 +61,11 @@ const index = () => {
     const handleUploadSchema = ({ file }) => {
         setSchemaName(file.name)
         const reader = new FileReader();
+        if (file.size>81034) {
+            message.info('The file must be less than or equal to 79,1 ko.')
+            return;
+        }
+        console.log(file.size)
 
         reader.onload = (e) => {
             if (e.target.result === "") {
@@ -91,19 +97,19 @@ const index = () => {
     return (
         <div className='dataSource'>
             <div className='dataSourceLeft'>
-                <Input style={{ margin: '10px' }} placeholder='search schema' />
+                <Input style={{ margin: '10px' }} onChange={(e)=>setSearchDatabase(e.target.value)} placeholder='search schema' />
 
                 <List
 
                     style={{ flex: 1, overflowY: 'auto', marginTop: '5px', width: '100%', borderRadius: '5px' }}
-                    dataSource={schemaList}
+                    dataSource={schemaList.filter(schema=>searchDatabase?schema.fileName.includes(searchDatabase):schemaList)}
                     renderItem={(schema, i) => (
                         <Button style={i === selectedDatabase ? databaseActive : { textAlign: 'center', border: 'none', borderRadius: '0px', width: '100%' }} onClick={() => handleClickDatabase(i)}>
                             {schema.fileName}
                         </Button >
                     )}
                 />
-                <Popover content={popContent} title="File.sql">
+                <Popover content={popContent} title="File.sql max size 79,1 ko.">
                     <Upload accept='.sql' onChange={(event) => handleUploadSchema(event)} showUploadList={false}>
                         <Button className='addSchema' icon={schemaSpinner ? <Spin spinning size='small' /> : <FileAddOutlined />} >Add schema</Button>
                     </Upload>
@@ -134,7 +140,7 @@ const index = () => {
                 title="Conpile your schema"
                 onCancel={() => setPreviewSchema(!previewShema)}
                 footer={[
-                    <Button key="submit" type="primary" loading={schemaSpinner} onClick={() => ParseSql(schema, axios,addSchema,setSchemaSpinner,message,"ZEfggj7u6EOX61hIrkeZc2EEwl93",schemaName) }>
+                    <Button key="submit" type="primary" loading={schemaSpinner} onClick={() => ParseSql(schema, axios,addSchema,setSchemaSpinner,message,"ZEfggj7u6EOX61hIrkeZc2EEwl93",schemaName,schemaList) }>
                         Compile
                     </Button>,
                 ]}

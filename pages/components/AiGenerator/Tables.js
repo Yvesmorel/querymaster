@@ -45,6 +45,7 @@ let wordAllow = [
     'superior',
     'inferior',
     'between',
+    'give',
   ];
 const Databases = [{ label: 'Postgre SQL', value: 'Postgre SQL' }, { label: 'MySQL', value: 'MySQL' }, { label: 'MariaDB', value: 'MariaDB' }, { label: 'SQLite', value: 'SQLite' }];
 export { Databases,wordAllow };

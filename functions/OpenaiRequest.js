@@ -1,5 +1,6 @@
 
 import { separateSQLAndJSON } from "./SqlSeparate";
+
 const parseToJson=(json)=> {
     try {
         const jsonObject = JSON.parse(json);
@@ -8,7 +9,9 @@ const parseToJson=(json)=> {
         console.error('Erreur de parsing JSON :', error);
       }
 }
-const getSQL = async (axios, setSendSpinner, human, wordAllow, database, message, setIa, addQuery, selectedDatabase, schemaList) => {
+
+
+const getSQL = async (axios, setSendSpinner, human, wordAllow, database, message, setIa, addQuery, selectedDatabase, schemaList,setTyping) => {
     function isValidQuery(query) {
         let isValid = 0;
 
@@ -43,7 +46,10 @@ const getSQL = async (axios, setSendSpinner, human, wordAllow, database, message
             .then(({ data }) => {
 
                 console.log('succes');
-                let response = data?.candidates[0].output?.match(/```sql\n([\s\S]+)\n```/)[1];
+                const formatRes1=data?.candidates[0].output?.match(/```sql\n([\s\S]+)\n```/)
+                const formatRes2=data?.candidates[0].output?.match(/```\n([\s\S]+)\n```/)
+                let response = formatRes1?formatRes1[1]:formatRes2?formatRes2[1]:data?.candidates[0].output;
+               
                 setIa(response || 'No result');
                 addQuery(human, response, 'Simple', null, "ZEfggj7u6EOX61hIrkeZc2EEwl93", message);
                 setSendSpinner(false);

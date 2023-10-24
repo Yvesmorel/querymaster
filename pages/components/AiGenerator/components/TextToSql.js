@@ -1,5 +1,6 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { AppContext } from '@/app/AppContextProvider';
+import '../styles/typingAnimation.scss';
 import AI from '../../../images/AIBOT.gif'
 import Image from 'next/image';
 import { Input, Select, Button, Spin, message } from 'antd';
@@ -18,6 +19,7 @@ import { dark as codeStyle } from 'react-syntax-highlighter/dist/cjs/styles/pris
 import atelierForestLight from 'react-syntax-highlighter/dist/cjs/styles/hljs/atelier-forest-light';
 import atelierSulphurpoolLight from 'react-syntax-highlighter/dist/cjs/styles/hljs/atelier-sulphurpool-light';
 
+
 import { getQuery } from '@/functions/GetQuery';
 import { addQuery } from '@/functions/AddQuery';
 import { getSQL } from '@/functions/OpenaiRequest';
@@ -25,7 +27,9 @@ import { wordAllow } from '../Tables';
 import { convertToSQLite } from '@/functions/ConvertToSQLite';
 import { runSQL } from '@/functions/RunSQL';
 
+import TypedAndPrims from './TypeAndPrism';
 import axios from 'axios';
+import Typist from 'react-typist';
 const { Option } = Select;
 const { TextArea } = Input;
 const selectSchemaStyle = {
@@ -37,30 +41,48 @@ const selectSchemaStyle = {
     borderRadius: '0px',
     boxShadow: "0px 12px 26px 0px rgba(16, 30, 115, 0.06)",
     borderRadius: '5px',
-    marginRight:'5px'
+    marginRight: '5px'
 }
 const TextToSql = () => {
     const [sendSpinner, setSendSpinner] = useState(false);
     const [runSpinner, setRunSpinner] = useState(false);
-    const [runRes,setRunRes]=useState([]);
+    const [typing, setTyping] = useState()
+    const [runRes, setRunRes] = useState([]);
     const [alreadyGenerate, setAlreadyGenerate] = useState(false)
-    const { jsonResult,setJsonResult,database, setDatabase, ia, setIa, human,setHuman,schemaList, setHumanschemaList, setSchemaList, schema, setSchema, selectedDatabase, setSelectedDatabase,runResult,setRunResult } = useContext(AppContext);
-   
-    
-      
-   
-      
-    function SQLCodeComponent(sqlCode) {
-        return (
-            <SyntaxHighlighter style={atelierForestLight} lineNumberContainerStyle={{ backgroundColor: "#0DD1ADE8", fontSize: '10px' }} wrapLines language="sql" customStyle={{ margin: '0px', borderTopLeftRadius: '8px', borderTopRightRadius: '8px', fontSize: '14px', textAlign: 'justify', color: '#0DD1ADE8', backgroundColor: 'rgb(248 249 251)' }}>
-                {sqlCode}
-            </SyntaxHighlighter>
-        );
-    }
+    const { jsonResult, setJsonResult, database, setDatabase, ia, setIa, human, setHuman, schemaList, setHumanschemaList, setSchemaList, schema, setSchema, selectedDatabase, setSelectedDatabase, runResult, setRunResult } = useContext(AppContext);
+
+
+
+    // useEffect(() => {
+    //     if (ia !== "") {
+    //         handleTyping(ia);
+    //     }
+
+    // }, [ia])
+
+
+    // function SQLCodeComponent(sqlCode) {
+    //     return (
+
+
+
+    //     );
+    // }
+    const Copy = (requete) => {
+
+        if (requete) {
+            // 2. On copie le texte dans le presse-papier
+            navigator.clipboard.writeText(requete).then(() => {
+                message.success('copied');
+            });
+        } else {
+            message.error('No text to copy.');
+        }
+    };
 
 
     return (
-      
+
         <div className='textToSql'>
             <div className='request'>
                 <TextArea rows={4} onChange={(e) => setHuman(e.target.value)} className='requestTop' placeholder='What ara you thinking?' />
@@ -69,7 +91,7 @@ const TextToSql = () => {
                     <div className='requestBottomRight'>
 
                         <Select dropdownStyle={{ optionSelectedColor: '#635BFF' }} options={Databases} bordered={false} defaultValue={Databases[0].label} className='databases' onChange={(value) => setDatabase(value)} />
-                        <Button loading={sendSpinner} icon={ <SendOutlined style={{ color: '#635BFF' }} />} className='send' onClick={() => getQuery(axios, setSendSpinner, human, wordAllow, database, message, setIa, addQuery, getSQL,selectedDatabase,schemaList)}>SEND</Button>
+                        <Button loading={sendSpinner} icon={<SendOutlined style={{ color: '#635BFF' }} />} className='send' onClick={() => getQuery(axios, setSendSpinner, human, wordAllow, database, message, setIa, addQuery, getSQL, selectedDatabase, schemaList, setTyping)}>SEND</Button>
 
 
                     </div>
@@ -78,12 +100,20 @@ const TextToSql = () => {
             <Image width={80} src={AI} alt="" className='ai' />
             <div className="response">
                 <div className='responseTop'>
-                    {SQLCodeComponent(ia)}
+                    {ia === "" ? "" : <Typist >
+
+                        <SyntaxHighlighter style={atelierForestLight} lineNumberContainerStyle={{ backgroundColor: "white", fontSize: '10px' }} showLineNumbers language="sql" customStyle={{ margin: '3px', borderRadius: '8px', fontSize: '14px', textAlign: 'justify', color: '#0DD1ADE8', backgroundColor: 'white' }}>
+                            {ia}
+
+                        </SyntaxHighlighter>
+                        <Typist.Delay ms={10} />
+
+                    </Typist>}
                 </div>
                 <div className='responseBottom'>
                     <div className='ai'>AI</div>
                     <div className='responseBottomRight'>
-           
+
                         {
                             schemaList.length > 0 ?
                                 <Select style={selectSchemaStyle} value={selectedDatabase} onChange={(value) => setSelectedDatabase(value)} defaultValue='select your schema' bordered={false}>
@@ -96,9 +126,9 @@ const TextToSql = () => {
                                 </Select> : ''
                         }
 
-                 
-                        <Button loading={runSpinner} icon={<Image width={15} src={run} alt='run' />} className='run' onClick={() => convertToSQLite(setRunSpinner, ia, axios, message, runSQL, selectedDatabase, schemaList,runResult,setRunResult)}>RUN</Button>
-                        <Button icon={<CopyOutlined style={{ color: '#635BFF' }} alt='copy' />} className='copy'>COPY</Button>
+
+                        <Button loading={runSpinner} icon={<Image width={15} src={run} alt='run' />} className='run' onClick={() => convertToSQLite(setRunSpinner, ia, axios, message, runSQL, selectedDatabase, schemaList, runResult, setRunResult)}>RUN</Button>
+                        <Button icon={<CopyOutlined style={{ color: '#635BFF' }} alt='copy' />} className='copy' onClick={() => Copy(ia)}>COPY</Button>
                     </div>
                 </div>
             </div>
