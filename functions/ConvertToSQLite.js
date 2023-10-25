@@ -18,7 +18,10 @@ export const convertToSQLite = (setRunSpinner, ia, axios, message, runSQL, selec
     })
         .then(({ data }) => {
             console.log(data);
-            let response = data?.candidates[0].output;
+            const query=data?.candidates[0].output;
+            const formatRes1 = query.match(/```sql\n([\s\S]+)\n```/)
+            const formatRes2 = query.match(/```\n([\s\S]+)\n```/)
+            let response = formatRes1?formatRes1[1]:formatRes2?formatRes2[1]:query;
             runSQL(schema, axios, response, setRunSpinner, message,runResult,setRunResult);
 
         })
