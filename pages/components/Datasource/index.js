@@ -134,7 +134,7 @@ const index = () => {
                     }
                 </div>
                 <div className='dataSourceRightBottom'>
-                    <TABLE columns={currentTable.columns} data={currentTable.values} width={"72vw"} height={"70vh"} />
+                    <TABLE columns={currentTable.columns} data={currentTable.values}  height={"80vh"} />
                 </div>
             </div>
             <Modal

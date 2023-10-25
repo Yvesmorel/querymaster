@@ -42,8 +42,8 @@
             display: flex;
             overflow-x: auto;
             overflow-y: hidden;
-            @media (max-width: 1118px) {
-                width: 90vw;
+            @media (max-width: 2000000px) {
+                width: 85vw;
                 align-self: center;
             }
             .tables {
@@ -62,11 +62,11 @@
             width: 100%;
             display: flex;
             justify-content: center;
-            align-items: center;
+           
         
         }
     }
-    @media (max-width: 1118px) {
+    @media (max-width: 2000000px) {
         .floatButton,.manage,.add{
             visibility: visible;
         }
@@ -79,9 +79,9 @@
         }
         .dataSourceRight {
             .dataSourceRightBottom {
-                .ant-table-wrapper{
-                    width: 80vw;
-                }
+                    .ant-table-wrapper{
+                        width: 85vw;
+                    }
             }
         }
         

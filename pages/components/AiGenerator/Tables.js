@@ -1,5 +1,6 @@
 let wordAllow = [
     'sélectionner',
+    'calculate',
     'insérer',
     'mise à jour',
     'supprimer',
