@@ -49,10 +49,11 @@ export const runSQL = (schema, axios, ia, setRunSpinner, message, runResult, set
                 //     console.log(table)
                 // })
             }
-            console.log(tables);
+          
             setRunSpinner(false);
         })
         .catch(function (error) {
+            console.log(schema);
             message.error("An error has occurred.");
             setRunSpinner(false);
         });

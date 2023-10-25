@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import './styles/style.scss';
-import { Input, Button, Popover, Upload, message, Modal, Spin, List } from 'antd';
-import { FileAddOutlined } from '@ant-design/icons';
+import { Input, Button, Popover, Upload, message, Modal, Spin, List, FloatButton } from 'antd';
+import { FileAddOutlined, UnorderedListOutlined } from '@ant-design/icons';
 import { schemaToSQLite } from '@/functions/SchemaToSQLite';
 import { addSchema } from '@/functions/AddSchema';
 import { getTables } from '@/functions/GetTables';
@@ -21,7 +21,8 @@ const index = () => {
     const { schemaList, setSchemaList, schema, setSchema, selectedDatabase, setSelectedDatabase } = useContext(AppContext);
     const [selectedTable, setSelectedTable] = useState(0)
     const [currentTable, setCurrentTable] = useState({ columns: [], values: [] });
-    const [searchDatabase,setSearchDatabase]=useState('');
+    const [searchDatabase, setSearchDatabase] = useState('');
+    const [manageSchemaModal, setManageSchemaModal] = useState(false);
     // const [tableList, setTableList] = useState(schemaList[0].tables)
     const databaseActive = {
         background: "#F4F4FF",
@@ -34,16 +35,17 @@ const index = () => {
 
     useEffect(() => {
         if (schemaList.length > 0) {
-            iniTializeDataSource(selectedDatabase,selectedTable);
+            iniTializeDataSource(selectedDatabase, selectedTable);
             // getTablesContent(schemaList[selectedDatabase].schema, axios, setCurrentTable, schemaList, selectedDatabase, selectedTable, message);
         }
     }, [schemaList])
-    const iniTializeDataSource=(selectedDatabase,selectedTable)=>{
-            const database=schemaList[selectedDatabase];
-            const tableColums =database.columns[selectedTable];
-            const tableData=database.data[selectedTable];
-            const tableName=Object.keys(tableColums)[selectedTable];
-            setCurrentTable({ columns: tableColums[tableName], values: tableData[tableName] })
+    const iniTializeDataSource = (selectedDatabase, selectedTable) => {
+        const database = schemaList[selectedDatabase];
+        const tableColums = database.columns[selectedTable];
+        const tableData = database.data.filter(table => Object.keys(table)[0] === schemaList[selectedDatabase].tableList[selectedTable])[0] || [];
+        const tableName = schemaList[selectedDatabase].tableList[selectedTable];
+        console.log(tableData, tableName);
+        setCurrentTable({ columns: tableColums[tableName], values: tableData[tableName] })
     }
     const popContent = (
         <div>
@@ -61,7 +63,7 @@ const index = () => {
     const handleUploadSchema = ({ file }) => {
         setSchemaName(file.name)
         const reader = new FileReader();
-        if (file.size>81034) {
+        if (file.size > 81034) {
             message.info('The file must be less than or equal to 79,1 ko.')
             return;
         }
@@ -76,7 +78,7 @@ const index = () => {
             if (sqlQuery.length === 0) {
                 return;
             }
-            
+
             setSchema(sqlQuery);
             setPreviewSchema(true);
         };
@@ -91,18 +93,18 @@ const index = () => {
     const handleClickDatabase = (pos) => {
         setSelectedDatabase(pos);
         setSelectedTable(0);
-        iniTializeDataSource(pos,0);
+        iniTializeDataSource(pos, 0);
     }
 
     return (
         <div className='dataSource'>
             <div className='dataSourceLeft'>
-                <Input style={{ margin: '10px' }} onChange={(e)=>setSearchDatabase(e.target.value)} placeholder='search schema' />
+                <Input style={{ margin: '10px' }} onChange={(e) => setSearchDatabase(e.target.value)} placeholder='search schema' />
 
                 <List
 
                     style={{ flex: 1, overflowY: 'auto', marginTop: '5px', width: '100%', borderRadius: '5px' }}
-                    dataSource={schemaList.filter(schema=>searchDatabase?schema.fileName.includes(searchDatabase):schemaList)}
+                    dataSource={schemaList.filter(schema => searchDatabase ? schema.fileName.includes(searchDatabase) : schemaList)}
                     renderItem={(schema, i) => (
                         <Button style={i === selectedDatabase ? databaseActive : { textAlign: 'center', border: 'none', borderRadius: '0px', width: '100%' }} onClick={() => handleClickDatabase(i)}>
                             {schema.fileName}
@@ -121,9 +123,10 @@ const index = () => {
                         schemaList.filter((schema, i) => i === selectedDatabase).map((schema, i) => {
                             return schema.tableList.map((table, i) => {
                                 return <Button onClick={() => {
-                                    console.log(i)
+                                    console.log(i, schemaList[selectedDatabase].tableList[i]);
+
                                     setSelectedTable(i)
-                                    iniTializeDataSource(selectedDatabase,i);
+                                    iniTializeDataSource(selectedDatabase, i);
                                     // getTablesContent(schemaList[selectedDatabase].schema, axios, setCurrentTable, schemaList, selectedDatabase, i, message);
                                 }} style={i === selectedTable ? { color: '#635BFF' } : {}} className='tables' key={i}>{table}</Button>
                             })
@@ -140,7 +143,7 @@ const index = () => {
                 title="Conpile your schema"
                 onCancel={() => setPreviewSchema(!previewShema)}
                 footer={[
-                    <Button key="submit" type="primary" loading={schemaSpinner} onClick={() => ParseSql(schema, axios,addSchema,setSchemaSpinner,message,"ZEfggj7u6EOX61hIrkeZc2EEwl93",schemaName,schemaList) }>
+                    <Button key="submit" type="primary" loading={schemaSpinner} onClick={() => ParseSql(schema, axios, addSchema, setSchemaSpinner, message, "ZEfggj7u6EOX61hIrkeZc2EEwl93", schemaName, schemaList)}>
                         Compile
                     </Button>,
                 ]}
@@ -150,6 +153,39 @@ const index = () => {
                 </div>
 
             </Modal>
+            <Modal
+                width={800}
+                open={manageSchemaModal}
+                title="Manage schema"
+                onCancel={() => setManageSchemaModal(!manageSchemaModal)}
+                footer={[
+                    <Button type="primary" onClick={() => setManageSchemaModal(!manageSchemaModal)}>
+                        Retour
+                    </Button>,
+                ]}
+            >
+                <Input style={{ margin: '10px' }} onChange={(e) => setSearchDatabase(e.target.value)} placeholder='search schema' />
+
+                <List
+
+                    style={{ flex: 1, overflowY: 'auto', marginTop: '5px', width: '100%', borderRadius: '5px' }}
+                    dataSource={schemaList.filter(schema => searchDatabase ? schema.fileName.includes(searchDatabase) : schemaList)}
+                    renderItem={(schema, i) => (
+                        <Button style={i === selectedDatabase ? databaseActive : { textAlign: 'center', border: 'none', borderRadius: '0px', width: '100%' }} onClick={() => handleClickDatabase(i)}>
+                            {schema.fileName}
+                        </Button >
+                    )}
+                />
+
+            </Modal>
+            <FloatButton.Group style={{ right: 9, bottom: 9 }} shape="square" className='floatButton'>
+                <FloatButton onClick={() => setManageSchemaModal(true)} shape='square' className='manage' icon={<UnorderedListOutlined />} tooltip={<div>Manage schema</div>} />
+                <Popover content={popContent} title="File.sql max size 79,1 ko.">
+                    <Upload accept='.sql' onChange={(event) => handleUploadSchema(event)} showUploadList={false}>
+                        <FloatButton shape='square' className='add' icon={<FileAddOutlined style={{ color: '#635BFF' }} />} />
+                    </Upload>
+                </Popover>
+            </FloatButton.Group>
         </div>
     );
 };

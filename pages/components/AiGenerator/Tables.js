@@ -47,5 +47,5 @@ let wordAllow = [
     'between',
     'give',
   ];
-const Databases = [{ label: 'Postgre SQL', value: 'Postgre SQL' }, { label: 'MySQL', value: 'MySQL' }, { label: 'MariaDB', value: 'MariaDB' }, { label: 'SQLite', value: 'SQLite' }];
+const Databases = [{ label: 'MySQL', value: 'MySQL' }, { label: 'MariaDB', value: 'MariaDB' }, { label: 'SQLite', value: 'SQLite' },{ label: 'Postgre SQL', value: 'Postgre SQL' }, ];
 export { Databases,wordAllow };

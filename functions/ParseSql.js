@@ -8,7 +8,7 @@ export const ParseSql = (schema, axios,addSchema,setSchemaSpinner,message,userId
         return;
     }
     axios({
-        url: 'http://localhost:3001/parseSql',
+        url: 'https://querymasterapi-moreldev.onrender.com/parseSql',
         method: 'post',
         headers: {
             'Content-Type': 'application/json',
