@@ -30,6 +30,7 @@ import { runSQL } from '@/functions/RunSQL';
 import TypedAndPrims from './TypeAndPrism';
 import axios from 'axios';
 import Typist from 'react-typist';
+import TypingAi from './TypingAi';
 const { Option } = Select;
 const { TextArea } = Input;
 const selectSchemaStyle = {
@@ -43,6 +44,7 @@ const selectSchemaStyle = {
     borderRadius: '5px',
     marginRight: '5px'
 }
+
 const TextToSql = () => {
     const [sendSpinner, setSendSpinner] = useState(false);
     const [runSpinner, setRunSpinner] = useState(false);
@@ -100,15 +102,7 @@ const TextToSql = () => {
             <Image width={80} src={AI} alt="" className='ai' />
             <div className="response">
                 <div className='responseTop'>
-                    {ia === "" ? "" : <Typist >
-
-                        <SyntaxHighlighter style={atelierForestLight} lineNumberContainerStyle={{ backgroundColor: "white", fontSize: '10px' }} showLineNumbers language="sql" customStyle={{ margin: '3px', borderRadius: '8px', fontSize: '14px', textAlign: 'justify', color: '#0DD1ADE8', backgroundColor: 'white' }}>
-                            {ia}
-
-                        </SyntaxHighlighter>
-                        <Typist.Delay ms={10} />
-
-                    </Typist>}
+                    {ia === "" ? "" : <TypingAi sql={ia} />}
                 </div>
                 <div className='responseBottom'>
                     <div className='ai'>AI</div>

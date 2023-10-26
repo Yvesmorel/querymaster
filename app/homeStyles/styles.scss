@@ -6,6 +6,7 @@
     top: 0;
     display: flex;
     flex-direction: column;
+    background-color: #FDFDFF;
 
     header {
         width: 100%;
@@ -78,20 +79,23 @@
             display: flex;
             flex-direction: column;
             margin-top: 40px;
-
+            .turn,.sqlQuery{
+                margin-top: 10px;
+               
+            }
+            .db{
+                align-self: center;
+                box-shadow: 0px 12px 26px 0px rgba(16, 30, 115, 0.06);
+                border-radius: 10px;
+            }
+            .turn{
+            // width: 500;
+            }
+            .sqlQuery{
+            //    width: 300;
+            }
             .version {
-
-                background-color: #F4F4FF;
-                color: #635BFF;
-                border-radius: 30px;
-                width: 100px;
-                padding-left: 5px;
-                padding-right: 5px;
-                height: 35px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                border: none;
+                margin-bottom: 30px;
             }
 
             .Title {
@@ -124,7 +128,7 @@
             .top {
                 display: flex;
                 justify-content: space-between;
-                width: 80%;
+                width: 500px;
                 height: auto;
 
                 .human,
@@ -162,6 +166,11 @@
 
                     .humanTop {
                         flex: 1;
+                        display: flex;
+                        p{
+                          align-self: center;
+                          text-align: center;
+                        }
 
 
                     }
@@ -198,6 +207,8 @@
 
                     .aiTop {
                         flex: 1;
+                        text-align: center;
+                        color:#0DD1ADE8 ;
 
 
                     }
@@ -205,7 +216,7 @@
                 }
             }
             .center{
-                width: 80%;
+                width: 500px;
                 display: flex;
                 justify-content: center;
 
