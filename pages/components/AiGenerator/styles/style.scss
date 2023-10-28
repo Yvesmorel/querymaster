@@ -1,4 +1,4 @@
-@media (max-width: 1118px) {
+@media (max-width: 1251px) {
     .aiGenerator {
         overflow-y: auto;
 
@@ -21,7 +21,7 @@
         width: 100%;
 
 
-        @media (max-width: 1118px) {
+        @media (max-width: 1251px) {
             align-items: normal;
             height: 100vh;
 
@@ -59,7 +59,7 @@
                 flex-direction: column;
                 align-items: center;
                 justify-content: space-between;
-                @media (max-width: 1118px) {
+                @media (max-width: 1251px) {
                     width: 98%;
                     margin-bottom: 10px;
                 }
@@ -105,7 +105,7 @@
                 }
 
                 .requestBottom {
-                    @media (max-width: 452px) {
+                    @media (max-width: 546px) {
                         height: auto;
                         
                         .requestBottomRight {
@@ -144,7 +144,7 @@
                 }
 
                 .responseBottom {
-                    @media (max-width: 452px) {
+                    @media (max-width: 546px) {
                         height: auto;
                         
                         .responseBottomRight{
@@ -152,7 +152,7 @@
                             justify-content: space-evenly;
                             align-items: center;
                             flex-direction: column;
-                            height: 120px;
+                            height: 150px;
                             .run ,.copy{ 
                                 width: 150px;
                             }
@@ -188,7 +188,7 @@
         align-items: center;
         flex: 1;
 
-        @media (max-width: 1118px) {
+        @media (max-width: 1251px) {
 
             flex: none;
 

@@ -4,6 +4,12 @@ export const convertToSQLite = (setRunSpinner, ia, axios, message, runSQL, selec
     if (schema==='') {
         message.error('Please load data source.');
         setRunSpinner(false);
+        return;
+    }
+    if (ia==='') {
+        message.error('Please enter your query.');
+        setRunSpinner(false);
+        return;
     }
     axios({
         url: 'https://generativelanguage.googleapis.com/v1beta3/models/text-bison-001:generateText?key=' + process.env.BARDAI,
@@ -26,7 +32,7 @@ export const convertToSQLite = (setRunSpinner, ia, axios, message, runSQL, selec
 
         })
         .catch(function (error) {
-            message.error("An error has occurred.");
+            message.error("An error has occurred please try again.");
             setRunSpinner(false);
         });
 }

@@ -98,7 +98,7 @@ const index = () => {
 
     return (
         <div className='dataSource'>
-            <div className='dataSourceLeft'>
+            {/* <div className='dataSourceLeft'>
                 <Input style={{ margin: '10px' }} onChange={(e) => setSearchDatabase(e.target.value)} placeholder='search schema' />
 
                 <List
@@ -116,7 +116,7 @@ const index = () => {
                         <Button className='addSchema' icon={schemaSpinner ? <Spin spinning size='small' /> : <FileAddOutlined />} >Add schema</Button>
                     </Upload>
                 </Popover>
-            </div>
+            </div> */}
             <div className='dataSourceRight'>
                 <div className='dataSourceRightTop'>
                     {
@@ -160,7 +160,7 @@ const index = () => {
                 onCancel={() => setManageSchemaModal(!manageSchemaModal)}
                 footer={[
                     <Button type="primary" onClick={() => setManageSchemaModal(!manageSchemaModal)}>
-                        Retour
+                        Back
                     </Button>,
                 ]}
             >
@@ -171,7 +171,7 @@ const index = () => {
                     style={{ flex: 1, overflowY: 'auto', marginTop: '5px', width: '100%', borderRadius: '5px' }}
                     dataSource={schemaList.filter(schema => searchDatabase ? schema.fileName.includes(searchDatabase) : schemaList)}
                     renderItem={(schema, i) => (
-                        <Button style={i === selectedDatabase ? databaseActive : { textAlign: 'center', border: 'none', borderRadius: '0px', width: '100%' }} onClick={() => handleClickDatabase(i)}>
+                        <Button key={i} style={i === selectedDatabase ? databaseActive : { textAlign: 'center', border: 'none', borderRadius: '0px', width: '100%' }} onClick={() => handleClickDatabase(i)}>
                             {schema.fileName}
                         </Button >
                     )}

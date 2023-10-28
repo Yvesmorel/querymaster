@@ -1,7 +1,9 @@
+import {notification } from 'antd';
+
 export const runSQL = (schema, axios, ia, setRunSpinner, message, runResult, setRunResult) => {
 
     axios({
-        url: 'https://querymasterapi-moreldev.onrender.com/query',
+        url: 'http://localhost:3001/query',
         method: 'post',
         headers: {
             'Content-Type': 'application/json',
@@ -49,13 +51,16 @@ export const runSQL = (schema, axios, ia, setRunSpinner, message, runResult, set
                 //     console.log(table)
                 // })
             }
-          
+
             setRunSpinner(false);
         })
-        .catch(function (error) {
-            console.log(schema);
-            message.error("An error has occurred.");
+        .catch(function ({ response }) {
             setRunSpinner(false);
+            notification.error({
+                description: response.data,
+                message:'ERROR',
+                placement:'bottomLeft'
+            })
         });
 
 }

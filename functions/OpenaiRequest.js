@@ -55,8 +55,7 @@ const getSQL = async (axios, setSendSpinner, human, wordAllow, database, message
                 setSendSpinner(false);
             })
             .catch(function (error) {
-                console.dir(error);
-                message.error("An error has occurred, please try again.");
+                message.error("An error has occurred please try again.");
                 setSendSpinner(false);
             });
     } else {

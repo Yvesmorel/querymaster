@@ -3,9 +3,10 @@ import { AppContext } from '@/app/AppContextProvider';
 import '../styles/typingAnimation.scss';
 import AI from '../../../images/AIBOT.gif'
 import Image from 'next/image';
-import { Input, Select, Button, Spin, message } from 'antd';
+import { Input, Select, Button, Spin, message, Modal } from 'antd';
 import { Databases } from '../Tables';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faExpand } from '@fortawesome/free-solid-svg-icons';
 import { SendOutlined, CopyOutlined } from '@ant-design/icons'
 import run from '../icons/run.svg';
 import copy from '../icons/copy.svg';
@@ -18,6 +19,7 @@ import { dark as codeStyle } from 'react-syntax-highlighter/dist/cjs/styles/pris
 // import atelierCaveLight from 'react-syntax-highlighter/dist/cjs/styles/hljs/atelier-cave-light';
 import atelierForestLight from 'react-syntax-highlighter/dist/cjs/styles/hljs/atelier-forest-light';
 import atelierSulphurpoolLight from 'react-syntax-highlighter/dist/cjs/styles/hljs/atelier-sulphurpool-light';
+import CodeEditor from './CodeEditor';
 
 
 import { getQuery } from '@/functions/GetQuery';
@@ -49,6 +51,7 @@ const TextToSql = () => {
     const [sendSpinner, setSendSpinner] = useState(false);
     const [runSpinner, setRunSpinner] = useState(false);
     const [typing, setTyping] = useState()
+    const [expand, setExpand] = useState(false);
     const [runRes, setRunRes] = useState([]);
     const [alreadyGenerate, setAlreadyGenerate] = useState(false)
     const { jsonResult, setJsonResult, database, setDatabase, ia, setIa, human, setHuman, schemaList, setHumanschemaList, setSchemaList, schema, setSchema, selectedDatabase, setSelectedDatabase, runResult, setRunResult } = useContext(AppContext);
@@ -102,7 +105,8 @@ const TextToSql = () => {
             <Image width={80} src={AI} alt="" className='ai' />
             <div className="response">
                 <div className='responseTop'>
-                    {ia === "" ? "" : <TypingAi sql={ia} />}
+                    {ia === "" ? "" : <CodeEditor ia={ia} setIa={setIa} />}
+                    {/* <CodeEditor /> */}
                 </div>
                 <div className='responseBottom'>
                     <div className='ai'>AI</div>
@@ -120,12 +124,26 @@ const TextToSql = () => {
                                 </Select> : ''
                         }
 
-
+                        <Button icon={<FontAwesomeIcon icon={faExpand} />} className='run' onClick={() => setExpand(true)}>EXPAND</Button>
                         <Button loading={runSpinner} icon={<Image width={15} src={run} alt='run' />} className='run' onClick={() => convertToSQLite(setRunSpinner, ia, axios, message, runSQL, selectedDatabase, schemaList, runResult, setRunResult)}>RUN</Button>
                         <Button icon={<CopyOutlined style={{ color: '#635BFF' }} alt='copy' />} className='copy' onClick={() => Copy(ia)}>COPY</Button>
                     </div>
                 </div>
             </div>
+            <Modal
+                width={800}
+                open={expand}
+                title="Manage schema"
+                onCancel={() => setExpand(!expand)}
+                footer={[
+                    <Button type="primary" onClick={() => setExpand(!expand)}>
+                        Back
+                    </Button>,
+                ]}
+            >
+                <CodeEditor ia={ia} setIa={setIa} />
+
+            </Modal>
 
         </div>
 
