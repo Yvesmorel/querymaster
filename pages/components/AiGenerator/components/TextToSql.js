@@ -28,6 +28,7 @@ import { getSQL } from '@/functions/OpenaiRequest';
 import { wordAllow } from '../Tables';
 import { convertToSQLite } from '@/functions/ConvertToSQLite';
 import { runSQL } from '@/functions/RunSQL';
+import { OptimizeQuery } from '@/functions/OptimizeQuery';
 
 import TypedAndPrims from './TypeAndPrism';
 import axios from 'axios';
@@ -49,6 +50,7 @@ const selectSchemaStyle = {
 
 const TextToSql = () => {
     const [sendSpinner, setSendSpinner] = useState(false);
+    const [optimizedSpinner, setOptimizedSpinner] = useState(false);
     const [runSpinner, setRunSpinner] = useState(false);
     const [typing, setTyping] = useState()
     const [expand, setExpand] = useState(false);
@@ -136,9 +138,17 @@ const TextToSql = () => {
                 title="Manage schema"
                 onCancel={() => setExpand(!expand)}
                 footer={[
-                    <Button type="primary" onClick={() => setExpand(!expand)}>
+                    <Button key={"run"} loading={runSpinner} icon={<Image width={15} src={run} alt='run' />} className='run' onClick={() => {
+                        setExpand(false);
+                        convertToSQLite(setRunSpinner, ia, axios, message, runSQL, selectedDatabase, schemaList, runResult, setRunResult);
+                    }}>RUN</Button>,
+                    <Button key='optimize' loading={optimizedSpinner} onClick={() => OptimizeQuery(selectedDatabase,schemaList,axios,ia, database, message, setIa,wordAllow,setOptimizedSpinner)}>
+                        Optimize
+                    </Button>,
+                    <Button key={'back'} type="primary" onClick={() => setExpand(!expand)}>
                         Back
                     </Button>,
+
                 ]}
             >
                 <CodeEditor ia={ia} setIa={setIa} />

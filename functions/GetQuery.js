@@ -37,9 +37,7 @@ const getQuery = async (axios, setSendSpinner, human, wordAllow, database, messa
             const formatRes1 = query.match(/```sql\n([\s\S]+)\n```/)
             const formatRes2 = query.match(/```\n([\s\S]+)\n```/)
             const res=formatRes1?formatRes1[1]:formatRes2?formatRes2[1]:query;
-            
-            console.log(insererSautLigne(res))
-            setIa(insererSautLigne(res));
+            setIa(res || 'No result.');
             setSendSpinner(false);
         } else {
             getSQL(axios, setSendSpinner, human, wordAllow, database, message, setIa, addQuery, selectedDatabase, schemaList,setTyping)
