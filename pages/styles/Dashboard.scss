@@ -94,6 +94,7 @@ $Rublik: 'Rubik';
             display: flex;
             justify-content: space-between;
             align-items: center;
+           
             @media (max-width: 452px) {
                 .version {
                     font-size: 9px;

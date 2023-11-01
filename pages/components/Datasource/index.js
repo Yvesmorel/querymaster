@@ -1,3 +1,4 @@
+
 import React, { useState, useContext, useEffect } from 'react';
 import './styles/style.scss';
 import { Input, Button, Popover, Upload, message, Modal, Spin, List, FloatButton } from 'antd';
@@ -63,7 +64,7 @@ const index = () => {
     const handleUploadSchema = ({ file }) => {
         setSchemaName(file.name)
         const reader = new FileReader();
-        if (file.size > 81034) {
+        if (file.size > 5000000) {
             message.info('The file must be less than or equal to 79,1 ko.')
             return;
         }
@@ -78,17 +79,78 @@ const index = () => {
             if (sqlQuery.length === 0) {
                 return;
             }
-
-            setSchema(sqlQuery);
+            if (processSQLInserts(content)===false) {
+                return;
+            }
+            console.log(processSQLInserts(content).size)
+            setSchema(processSQLInserts(content));
             setPreviewSchema(true);
         };
         try {
             reader.readAsText(file['originFileObj']);
         } catch (error) {
-            message.error('error');
+            message.error(error.message)
         }
 
     };
+    function limitInsertsToTwoRows(inputString) {
+        const inserts = inputString.split('INSERT INTO');
+        const limitedInserts = inserts.map((insert, index) => {
+            if (index === 0) return insert;
+            const lines = insert.split('\n');
+            const limitedLines = lines.slice(0, 3); // Récupère les 3 premières lignes (INSERT INTO et les deux lignes de données)
+            return limitedLines.join('\n');
+        });
+        return limitedInserts.join('INSERT INTO');
+    }
+
+    function processSQLInserts(sqlString) {
+        const create=sqlString.match(/(CREATE TABLE .*?;)/gs);
+        const inserts = sqlString.match(/(INSERT INTO .*?;)/gs);
+        if (!create) {
+            return false;
+        }
+        let lines=create?.join('');
+        inserts.map((insert) => {
+          
+          const rows=insert.split('\n');
+          
+          const nbrLines=rows.length
+          rows.map((row,i)=>{
+            if (i<=9 || i===nbrLines-1) {
+                lines+=row+"\n";
+            }
+          })
+        });
+      
+        return lines.replace(/0x[0-9A-Fa-f]+/g, "0x00");
+      }
+    // function limitInsertsToTwoRows(sqlText) {
+    //     const lines = sqlText.split('\n');
+    //     let result = '';
+    //     let insertCounter = 0;
+    
+    //     for (const line of lines) {
+    //         if (line.trim().startsWith('INSERT INTO')) {
+    //             insertCounter++;
+    //             if (insertCounter > 2) {
+    //                 result += ');'; // Ferme l'INSERT INTO précédent
+    //                 insertCounter = 1; // Réinitialise le compteur
+    //             }
+    //             if (insertCounter === 1) {
+    //                 result += line + '\n'; // Ajoute la première ligne d'INSERT INTO
+    //             } else {
+    //                 result += line.trim().endsWith(',') ? line.trim() + '\n' : line.trim() + ',\n'; // Ajoute la deuxième ligne d'INSERT INTO
+    //             }
+    //         } else {
+    //             result += line + '\n';
+    //         }
+    //     }
+    
+    //     return result;
+    // }
+
+    
 
     const handleClickDatabase = (pos) => {
         setSelectedDatabase(pos);

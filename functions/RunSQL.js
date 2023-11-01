@@ -3,7 +3,7 @@ import {notification } from 'antd';
 export const runSQL = (schema, axios, ia, setRunSpinner, message, runResult, setRunResult) => {
 
     axios({
-        url: 'https://querymasterapi-moreldev.onrender.com/query',
+        url: 'http://localhost:3001/query',
         method: 'post',
         headers: {
             'Content-Type': 'application/json',

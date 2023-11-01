@@ -25,23 +25,23 @@ const getQuery = async (axios, setSendSpinner, human, wordAllow, database, messa
         return;
     }
     try {
-        const q = query(collection(db, 'Simple'), where("query", "==", human));
-        const recupData = []
-        const querySnapshot = await getDocs(q);
-        querySnapshot.forEach((doc) => {
-            recupData.push(doc.data());
-        });
+    //     const q = query(collection(db, 'Simple'), where("query", "==", human));
+    //     const recupData = []
+    //     const querySnapshot = await getDocs(q);
+    //     querySnapshot.forEach((doc) => {
+    //         recupData.push(doc.data());
+    //     });
 
-        if (recupData.length > 0) {
-            let query = recupData[0]?.result
-            const formatRes1 = query.match(/```sql\n([\s\S]+)\n```/)
-            const formatRes2 = query.match(/```\n([\s\S]+)\n```/)
-            const res=formatRes1?formatRes1[1]:formatRes2?formatRes2[1]:query;
-            setIa(res || 'No result.');
-            setSendSpinner(false);
-        } else {
+    //     if (recupData.length > 0) {
+    //         let query = recupData[0]?.result
+    //         const formatRes1 = query.match(/```sql\n([\s\S]+)\n```/)
+    //         const formatRes2 = query.match(/```\n([\s\S]+)\n```/)
+    //         const res=formatRes1?formatRes1[1]:formatRes2?formatRes2[1]:query;
+    //         setIa(res || 'No result.');
+    //         setSendSpinner(false);
+    //     } else {
             getSQL(axios, setSendSpinner, human, wordAllow, database, message, setIa, addQuery, selectedDatabase, schemaList,setTyping)
-        }
+        // }
     } catch (error) {
 
         setSendSpinner(false);

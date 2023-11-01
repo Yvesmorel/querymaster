@@ -51,7 +51,7 @@ const getSQL = async (axios, setSendSpinner, human, wordAllow, database, message
                 let response = formatRes1?formatRes1[1]:formatRes2?formatRes2[1]:data?.candidates[0].output;
                
                 setIa(response || 'No result');
-                addQuery(human, response, 'Simple', null, "ZEfggj7u6EOX61hIrkeZc2EEwl93", message);
+                // addQuery(human, response, 'Simple', null, "ZEfggj7u6EOX61hIrkeZc2EEwl93", message);
                 setSendSpinner(false);
             })
             .catch(function (error) {
